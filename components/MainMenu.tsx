@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { KeyboardLayout, Level, UserProgression, HighScore } from '../types';
 import { LEVELS, AVATARS } from '../constants';
 
@@ -25,14 +25,48 @@ const MainMenu: React.FC<MainMenuProps> = ({
   highScores
 }) => {
   const [showScores, setShowScores] = useState(false);
+  const [installable, setInstallable] = useState(false);
+
+  useEffect(() => {
+    // Check if install prompt is available (captured in index.html)
+    const checkInstallable = () => {
+      if ((window as any).deferredPrompt) {
+        setInstallable(true);
+      }
+    };
+    
+    checkInstallable();
+    window.addEventListener('beforeinstallprompt', checkInstallable);
+    return () => window.removeEventListener('beforeinstallprompt', checkInstallable);
+  }, []);
+
+  const handleInstallClick = async () => {
+    const promptEvent = (window as any).deferredPrompt;
+    if (!promptEvent) return;
+    
+    promptEvent.prompt();
+    const { outcome } = await promptEvent.userChoice;
+    console.log(`User response to install prompt: ${outcome}`);
+    (window as any).deferredPrompt = null;
+    setInstallable(false);
+  };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-6 max-w-6xl mx-auto space-y-12 animate-in fade-in duration-700">
-      <header className="text-center space-y-4">
+      <header className="text-center space-y-4 relative">
         <h1 className="text-6xl sm:text-8xl font-black bg-clip-text text-transparent bg-gradient-to-br from-blue-400 via-indigo-400 to-purple-500 drop-shadow-2xl italic tracking-tighter">
           TYPOQUEST
         </h1>
         <p className="text-xl text-indigo-300 font-medium tracking-wide">L'aventure commence ici ! 🚀</p>
+        
+        {installable && (
+          <button 
+            onClick={handleInstallClick}
+            className="mt-4 px-6 py-2 bg-indigo-600/30 hover:bg-indigo-600 text-indigo-200 hover:text-white rounded-full border border-indigo-500/50 transition-all text-xs font-bold uppercase tracking-widest flex items-center gap-2 mx-auto"
+          >
+            <i className="fas fa-download"></i> Installer sur l'ordinateur
+          </button>
+        )}
       </header>
 
       {/* High Scores Modal Overlay */}
