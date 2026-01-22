@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { KeyboardLayout, Level, UserProgression, HighScore } from '../types';
 import { LEVELS, AVATARS } from '../constants';
+import ParentGuide from './ParentGuide';
 
 interface MainMenuProps {
   onStart: (level: Level, layout: KeyboardLayout, avatar: string) => void;
@@ -25,10 +26,10 @@ const MainMenu: React.FC<MainMenuProps> = ({
   highScores
 }) => {
   const [showScores, setShowScores] = useState(false);
+  const [showParentGuide, setShowParentGuide] = useState(false);
   const [installable, setInstallable] = useState(false);
 
   useEffect(() => {
-    // Check if install prompt is available (captured in index.html)
     const checkInstallable = () => {
       if ((window as any).deferredPrompt) {
         setInstallable(true);
@@ -53,20 +54,31 @@ const MainMenu: React.FC<MainMenuProps> = ({
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-6 max-w-6xl mx-auto space-y-12 animate-in fade-in duration-700">
+      
+      {showParentGuide && <ParentGuide onClose={() => setShowParentGuide(false)} />}
+
       <header className="text-center space-y-4 relative">
         <h1 className="text-6xl sm:text-8xl font-black bg-clip-text text-transparent bg-gradient-to-br from-blue-400 via-indigo-400 to-purple-500 drop-shadow-2xl italic tracking-tighter">
           TYPOQUEST
         </h1>
         <p className="text-xl text-indigo-300 font-medium tracking-wide">L'aventure commence ici ! 🚀</p>
         
-        {installable && (
+        <div className="flex flex-col sm:flex-row gap-3 justify-center mt-6">
+          {installable && (
+            <button 
+              onClick={handleInstallClick}
+              className="px-6 py-2 bg-indigo-600/30 hover:bg-indigo-600 text-indigo-200 hover:text-white rounded-full border border-indigo-500/50 transition-all text-xs font-bold uppercase tracking-widest flex items-center gap-2"
+            >
+              <i className="fas fa-download"></i> Installer
+            </button>
+          )}
           <button 
-            onClick={handleInstallClick}
-            className="mt-4 px-6 py-2 bg-indigo-600/30 hover:bg-indigo-600 text-indigo-200 hover:text-white rounded-full border border-indigo-500/50 transition-all text-xs font-bold uppercase tracking-widest flex items-center gap-2 mx-auto"
+            onClick={() => setShowParentGuide(true)}
+            className="px-6 py-2 bg-slate-800/50 hover:bg-slate-700 text-slate-300 hover:text-white rounded-full border border-white/10 transition-all text-xs font-bold uppercase tracking-widest flex items-center gap-2"
           >
-            <i className="fas fa-download"></i> Installer sur l'ordinateur
+            <i className="fas fa-lightbulb"></i> Aide Parents
           </button>
-        )}
+        </div>
       </header>
 
       {/* High Scores Modal Overlay */}
