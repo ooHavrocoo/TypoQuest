@@ -65,13 +65,13 @@ const ParentGuide: React.FC<ParentGuideProps> = ({ onClose }) => {
             </p>
           </section>
 
-          {/* Security/Privacy */}
+          {/* Open Source / Security */}
           <section className="space-y-4">
             <h3 className="text-xl font-bold text-purple-400 flex items-center gap-2">
-              <span className="text-2xl">🛡️</span> Sécurité
+              <span className="text-2xl">🛡️</span> Transparence & Sécurité
             </h3>
-            <p className="text-slate-400 text-sm">
-              Aucune donnée personnelle n'est envoyée sur un serveur. Les scores et la progression sont stockés uniquement sur **votre** ordinateur.
+            <p className="text-slate-400 text-sm bg-slate-800/50 p-5 rounded-2xl border border-white/5">
+              Ce projet est **Open Source** (code public sur GitHub). Cela signifie que n'importe qui peut vérifier que le code est sain et sécurisé pour vos enfants. Aucune publicité, aucun traqueur.
             </p>
           </section>
         </div>

@@ -12,12 +12,20 @@ C'est une "Application Web". Elle fonctionne dans votre navigateur (Chrome ou Ed
 4. Cliquez sur **Installer**.
 5. Le jeu s'ouvrira dans sa propre fenêtre. Vous trouverez maintenant une icône "TypoQuest" sur votre bureau !
 
-## 🐧 Installation sur Linux (Debian)
+## 🐧 Installation sur Linux (Debian / Ubuntu)
 1. Ouvrez le lien dans **Google Chrome** ou **Chromium**.
 2. En haut à droite, cliquez sur les **trois petits points verticaux** (le menu).
 3. Cherchez l'option **"Installer TypoQuest..."** ou **"Enregistrer et partager" > "Installer la page en tant qu'application"**.
 4. Validez l'installation.
 5. Le jeu est maintenant disponible dans votre liste d'applications (Menu Démarrer / Activités).
+
+## 🛠️ Pour les utilisateurs GitHub (Installation manuelle)
+Si vous avez téléchargé le code source :
+1. Installez [Node.js](https://nodejs.org/).
+2. Ouvrez un terminal dans le dossier du jeu.
+3. Tapez `npm install` puis `npm run dev`.
+4. Accédez à l'adresse indiquée (souvent `localhost:5173`).
+5. Suivez les étapes d'installation classiques du navigateur citées plus haut.
 
 ## 💡 Conseils pour vos enfants
 - **Clavier :** Vérifiez si votre clavier est un **AZERTY** (les premières lettres en haut à gauche sont A-Z-E-R-T-Y) et sélectionnez le bon mode dans le menu du jeu.
