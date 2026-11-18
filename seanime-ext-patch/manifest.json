@@ -1,7 +1,7 @@
 {
   "id": "anime-sama-online-streaming",
   "name": "FR | Anime Sama",
-  "version": "3.1.5-local",
+  "version": "3.1.5",
   "manifestURI": "https://raw.githubusercontent.com/ooHavrocoo/TypoQuest/main/seanime-ext-patch/manifest.json",
   "language": "typescript",
   "type": "onlinestream-provider",
