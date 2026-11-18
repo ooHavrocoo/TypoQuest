@@ -307,10 +307,21 @@ class Provider {
 
         const html = await req.text();
 
+        function toBase(n: number, a: number): string {
+            if (a >= 2 && a <= 36) return n.toString(a);
+            // bases > 36 (packer 62) : Number.toString plante, on le fait a la main
+            const digs = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            if (n === 0) return "0";
+            let s = "";
+            while (n > 0) { s = digs.charAt(n % a) + s; n = Math.floor(n / a); }
+            return s;
+        }
+
         function unpack(p: string, a: number, c: number, k: string[]): string {
             while (c--) {
                 if (k[c]) {
-                    p = p.replace(new RegExp('\\b' + c.toString(a) + '\\b', 'g'), k[c]);
+                    const token = toBase(c, a).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+                    p = p.replace(new RegExp('\\b' + token + '\\b', 'g'), k[c]);
                 }
             }
             return p;
@@ -327,12 +338,17 @@ class Provider {
                 const unpackMatch = script.match(Provider.PACKER_RE);
 
                 if (unpackMatch) {
-                    const packed = unpackMatch[1];
-                    const base = parseInt(unpackMatch[2], 10);
-                    const count = parseInt(unpackMatch[3], 10);
-                    const dict = unpackMatch[4].split('|');
+                    try {
+                        const packed = unpackMatch[1];
+                        const base = parseInt(unpackMatch[2], 10);
+                        const count = parseInt(unpackMatch[3], 10);
+                        const dict = unpackMatch[4].split('|');
 
-                    unpacked = unpack(packed, base, count, dict);
+                        unpacked = unpack(packed, base, count, dict);
+                    } catch (e) {
+                        // unpack KO (base > 36 etc.) : on se contente du HTML brut
+                        console.error("unpack failed, falling back to raw html", e);
+                    }
                     break;
                 }
             }
